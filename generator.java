@@ -11,12 +11,19 @@ public class generator {
 	public static int yArr[]= {1,1,0,-1,-1,-1,0,1};	///y축 이동
 	
 	public static void main(String[] args) {
+		
 		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("사이즈 입력 : ");
 		size=sc.nextInt();
 		arr=new int[size][size];
 		
 		process();			////배열 초기화 
+		
+		System.out.print("X시작값 입력 : ");
 		int startX=sc.nextInt();		///시작 x값
+		
+		System.out.print("Y시작값 입력 : ");
 		int startY=sc.nextInt();		///시작 y값
 		arr[startX][startY]=1;		///시작지점 체크
 		
@@ -61,15 +68,14 @@ public class generator {
 		int minVal=size;
 		int minIndex=-1;
 		
-		for(int i=0; i<size; i++) {
+		for(int i=0; i<8; i++) {
 			int newX=x+xArr[i];
 			int newY=y+yArr[i];
 			
 			int val=0;
 			
-			if(isSafe(newX,newY)) {
-				
-				for(int j=0; j<size; j++) {
+			if(isSafe(newX,newY)) {	//차수가 가장 낮은곳 찾기.
+				for(int j=0; j<8; j++) {
 					int tmpX=newX+xArr[j];
 					int tmpY=newY+yArr[j];
 					
@@ -77,8 +83,7 @@ public class generator {
 						val++;
 					}
 				}
-				
-				if(minVal>val) {
+				if(minVal>=val) {
 					minVal=val;
 					minIndex=i;
 				}
