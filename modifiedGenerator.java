@@ -98,7 +98,7 @@ public class modifiedGenerator {
 		String tmp="";
 		for(int i=0; i<ySize; i++) {
 			for(int j=0; j<xSize; j++) {
-				tmp+=String.format("%3d",completeArr[i][j]);
+				tmp+=String.format("%10d",completeArr[i][j]);
 			}
 			tmp+='\n';
 		}
@@ -109,7 +109,7 @@ public class modifiedGenerator {
 		String tmp="";
 		for(int i=0; i<ySize; i++) {
 			for(int j=0; j<xSize; j++) {
-				tmp+=String.format("%3d",arr[i][j]);
+				tmp+=String.format("%10d",arr[i][j]);
 			}
 			tmp+='\n';
 		}
