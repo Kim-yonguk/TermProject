@@ -16,6 +16,7 @@ public class modifiedGenerator {
 	public static int startX,startY;
 	public static int endX,endY;
 	public static int cnt;
+	public static Random r =new Random();
 	
 	
 	public static void main(String[] args) throws Exception {
@@ -29,16 +30,23 @@ public class modifiedGenerator {
 		
 		
 		cnt=xSize*ySize/5;
+		Random r =new Random();
+		int randomNumber=r.nextInt(10);
+		
 		
 		
 		arr=new int[ySize][xSize];
 		completeArr=new int[ySize][xSize];
-		init();
-		
 		startX=2;
 		startY=2;
+
 		arr[startX][startY]=1;
-		if(solve(startX,startY,2)) {
+		
+		
+		init();
+		makeWall(randomNumber);
+		
+		if(solve(startX,startY,2,randomNumber)) {
 			System.out.println("yes");
 			//printSolution();
 		}else {
@@ -83,7 +91,7 @@ public class modifiedGenerator {
 			i=r.nextInt(ySize-1);
 			j=r.nextInt(xSize-1);
 			
-			if((arr[i][j]==-1 || i==startY || i==endY || j==startX || j==endX))
+			if((arr[i][j]==-1 || i==startY || i==endY || j==startX || j==endX || arr[i][j]==-100))
 				continue;
 			else {
 				arr[i][j]=-1;
@@ -116,9 +124,9 @@ public class modifiedGenerator {
 		
 		return tmp;
 	}
-	public static boolean solve(int x,int y,int count) {
-		if(count==xSize*ySize+1) {
-			arr[y][x]=count-1;
+	public static boolean solve(int x,int y,int count,int randomNumber) {
+		if(count==xSize*ySize+1-randomNumber) {
+			arr[y][x]=count-1-randomNumber;
 			endX=x;
 			endY=y;
 			return true;
@@ -154,7 +162,7 @@ public class modifiedGenerator {
 		if(isSafe(newX,newY)) {
 			arr[y][x]=count-1;
 			
-			if(solve(newX,newY,count+1))
+			if(solve(newX,newY,count+1,randomNumber))
 				return true;
 			else
 				arr[y][x]=-1;
@@ -167,7 +175,7 @@ public class modifiedGenerator {
 	
 	
 	public static boolean isSafe(int x,int y) {
-		if((x>=0 && x<xSize )&& (y>=0 && y<ySize) && arr[y][x]==-1)
+		if((x>=0 && x<xSize )&& (y>=0 && y<ySize) && arr[y][x]==-1 && arr[y][x]!=-100)
 			return true;
 		else
 			return false;
@@ -178,6 +186,25 @@ public class modifiedGenerator {
 		for(int i=0; i<ySize; i++) {
 			for(int j=0; j<xSize; j++) {
 				arr[i][j]=-1;
+			}
+		}
+	}
+	
+	public static void makeWall(int randomNumber) {
+		//startX,startY 를 제외하고 벽을 생성
+		Random r=new Random();
+		int count=0;
+		int i,j;
+		
+		while(count<randomNumber) {
+			i=r.nextInt(ySize-1);
+			j=r.nextInt(xSize-1);
+			
+			if((i==startY || j==startX))
+				continue;
+			else {
+				arr[i][j]=-100;
+				count++;
 			}
 		}
 	}
