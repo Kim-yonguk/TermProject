@@ -64,14 +64,17 @@ public class modifiedGenerator {
 		
 		bw.write("<complete Array>\n");
 		bw.write(str);
+
+		bw.flush();
+		
 		
 		arr=delete();
 		String arrStr="";
 		arrStr=process2();
-		
-		
+		bw = new BufferedWriter(fw);
 		bw.write("<deleted Array>\n");
 		bw.write(arrStr);
+		bw.flush();
 		bw.close();
 		
 		
