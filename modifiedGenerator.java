@@ -31,7 +31,7 @@ public class modifiedGenerator {
 		
 		cnt=xSize*ySize/5;
 		Random r =new Random();
-		int randomNumber=r.nextInt(15);
+		int randomNumber=r.nextInt(5);
 		
 		
 		
@@ -43,8 +43,8 @@ public class modifiedGenerator {
 		arr[startX][startY]=1;
 		
 		
-		init();
-		makeWall(randomNumber);
+		init();	///초기값을 -100으로 초기화
+		//makeWall(randomNumber);
 		System.out.println(randomNumber);
 		
 		if(solve(startX,startY,2,randomNumber)) {
@@ -84,25 +84,7 @@ public class modifiedGenerator {
 			}
 		}
 	}
-	public static int[][] delete(){
-		Random r=new Random();
-		int count=0;
-		int i,j;
-		while(count<cnt) {
-			i=r.nextInt(ySize-1);
-			j=r.nextInt(xSize-1);
-			
-			if((arr[i][j]==-1 || i==startY || i==endY || j==startX || j==endX || arr[i][j]==-1))
-				continue;
-			else {
-				arr[i][j]=0;
-				count++;
-			}
-				
-		}
-		return arr;
-		
-	}
+	
 	public static String process() {
 		String tmp="";
 		for(int i=0; i<ySize; i++) {
@@ -162,11 +144,10 @@ public class modifiedGenerator {
 		
 		if(isSafe(newX,newY)) {
 			arr[y][x]=count-1;
-			
 			if(solve(newX,newY,count+1,randomNumber))
 				return true;
 			else
-				arr[y][x]=-100;
+				arr[y][x]=0;
 		}
 		
 		
@@ -176,7 +157,7 @@ public class modifiedGenerator {
 	
 	
 	public static boolean isSafe(int x,int y) {
-		if((x>=0 && x<xSize )&& (y>=0 && y<ySize) && arr[y][x]==-100 && arr[y][x]!=-1)
+		if((x>=0 && x<xSize )&& (y>=0 && y<ySize) && arr[y][x]==0 && arr[y][x]!=-1)
 			return true;
 		else
 			return false;
@@ -186,7 +167,7 @@ public class modifiedGenerator {
 	public static void init() {
 		for(int i=0; i<ySize; i++) {
 			for(int j=0; j<xSize; j++) {
-				arr[i][j]=-100;
+				arr[i][j]=0;
 			}
 		}
 	}
@@ -208,6 +189,26 @@ public class modifiedGenerator {
 				count++;
 			}
 		}
+	}
+	
+	public static int[][] delete(){
+		Random r=new Random();
+		int count=0;
+		int i,j;
+		while(count<cnt) {
+			i=r.nextInt(ySize-1);
+			j=r.nextInt(xSize-1);
+			
+			if((arr[i][j]==0 || i==startY || i==endY || j==startX || j==endX || arr[i][j]==-1))
+				continue;
+			else {
+				arr[i][j]=0;
+				count++;
+			}
+				
+		}
+		return arr;
+		
 	}
 	
 	public static void printSolution() {
