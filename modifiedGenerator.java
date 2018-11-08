@@ -1,6 +1,5 @@
 package TermProject;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Random;
@@ -22,62 +21,87 @@ public class modifiedGenerator {
 	public static void main(String[] args) throws Exception {
 		
 		Scanner sc = new Scanner(System.in);
-		BufferedWriter bw = new BufferedWriter(new FileWriter(new File("test.txt")));
+		File file=new File("test.txt");
+		FileWriter fw = new FileWriter(file,true);
+		System.out.print("테스트케이스 입력 : ");
 		
-		System.out.println("가로 길이 입력 : ");
-		xSize=sc.nextInt();		///가로길이
-		
-		System.out.println("세로 길이 입력 : ");
-		ySize=sc.nextInt();		///세로길이
-		
-		
-		cnt=5;
-//		Random r= new Random();
-//		int randomNumber=r.nextInt(5);
-		
-		
-		arr=new int[ySize][xSize];
-		completeArr=new int[ySize][xSize];
-//		makeWallArr=new int[ySize][xSize];
-		
-		init();
-		
-		
-		startX=2;
-		startY=2;
-		arr[startX][startY]=1;
-		if(solve(startX,startY,2)) {
-			System.out.println("Yes");
-		}else {
-			System.out.println("No");
+		int testCases=sc.nextInt();
+		fw.write(testCases+"\n");
+		while(testCases>0) {
+			System.out.println("가로 길이 입력 : ");
+			xSize=sc.nextInt();		///가로길이
+			
+			System.out.println("세로 길이 입력 : ");
+			ySize=sc.nextInt();		///세로길이
+			
+			
+			cnt=5;
+			Random r= new Random();
+			int ran=r.nextInt(5);
+			randomNumber=ran;
+			
+			
+			arr=new int[ySize][xSize];
+			completeArr=new int[ySize][xSize];
+			
+			init();
+			makeWall(randomNumber);
+			printSolution();
+			
+			
+			startX=2;
+			startY=2;
+			arr[startY][startX]=1;
+			
+			printSolution();
+//			if(solve(startX,startY,2)) {
+//				System.out.println("Yes");
+//			}else {
+//				while(solve(startX,startY,2));
+//			}
+			boolean check=true;
+			while(true) {
+				if(solve(startX,startY,2) && arr[endY][endX]==xSize*ySize-randomNumber){
+					System.out.println("yes");
+					testCases--;
+					break;
+				}else {
+					check=false;
+				}
+			}
+			
+			if(check) {
+				printSolution();
+				
+				copy();
+				
+				String str="";
+				str=process();
+				
+				
+				try {
+//					fw.write("<complete Array>\n");
+//					fw.write(xSize+" "+ySize+"\n");
+//					fw.write(str);
+					
+					arr=deleteArr();
+					String arrStr="";
+					arrStr=process2();
+					
+//					fw.write("<deleted Array>\n");
+					fw.write(xSize+" "+ySize+"\n");
+					fw.write(arrStr);
+					
+				
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else {
+				continue;
+			}
 		}
 		
-		
-		copy();
-		
-		String str="";
-		str=process();
-		
-		
-		try {
-			bw.write("<complete Array>");
-			bw.newLine();
-			bw.write(str);
-			
-			arr=deleteArr();
-			String arrStr="";
-			arrStr=process2();
-			
-			bw.write("<deleted Array>\n");
-			bw.write(arrStr);
-			
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		bw.close();
+		fw.close();
 		
 	}
 	public static void copy(){
@@ -91,7 +115,7 @@ public class modifiedGenerator {
 		String tmp="";
 		for(int i=0; i<ySize; i++) {
 			for(int j=0; j<xSize; j++) {
-				tmp+=String.format("%5d",completeArr[i][j]);
+				tmp+=String.format("%8d",completeArr[i][j]);
 			}
 			tmp+='\n';
 		}
@@ -102,7 +126,7 @@ public class modifiedGenerator {
 		String tmp="";
 		for(int i=0; i<ySize; i++) {
 			for(int j=0; j<xSize; j++) {
-				tmp+=String.format("%5d",arr[i][j]);
+				tmp+=String.format("%8d",arr[i][j]);
 			}
 			tmp+='\n';
 		}
@@ -110,7 +134,8 @@ public class modifiedGenerator {
 		return tmp;
 	}
 	public static boolean solve(int x,int y,int count) {
-		if(count==xSize*ySize+1) {
+		System.out.println(randomNumber);
+		if(count==xSize*ySize+1-randomNumber) {
 			arr[y][x]=count-1;
 			endX=x;
 			endY=y;
@@ -187,7 +212,7 @@ public class modifiedGenerator {
 			i=r.nextInt(ySize-1);
 			j=r.nextInt(xSize-1);
 			
-			if((i==startY || i==endY || j==startX || j==endX))
+			if((i==startY && j==startX) || (i==endY && j==endX) ||arr[i][j]==-1)
 				continue;
 			else {
 				arr[i][j]=0;
@@ -198,7 +223,7 @@ public class modifiedGenerator {
 		return arr;
 	}
 	
-	public static int[][] makeWall(int randomNumber){
+	public static void makeWall(int randomNumber){
 		Random r=new Random();
 		int count=0;
 		int i,j;
@@ -213,8 +238,6 @@ public class modifiedGenerator {
 				count++;
 			}
 		}
-		
-		return arr;
 	}
 	
 	public static void printSolution() {
