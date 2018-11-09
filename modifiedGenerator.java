@@ -21,23 +21,26 @@ public class modifiedGenerator {
 	public static void main(String[] args) throws Exception {
 		
 		Scanner sc = new Scanner(System.in);
-		File file=new File("test.txt");
+		File file=new File("input.txt");
 		FileWriter fw = new FileWriter(file,true);
 		System.out.print("테스트케이스 입력 : ");
-		
 		int testCases=sc.nextInt();
+		
 		fw.write(testCases+"\n");
 		while(testCases>0) {
-			System.out.println("가로 길이 입력 : ");
-			xSize=sc.nextInt();		///가로길이
+			//System.out.println("가로 길이 입력 : ");
+			//xSize=sc.nextInt();		///가로길이
+
+			xSize=(int) (Math.random()*15+5);
 			
-			System.out.println("세로 길이 입력 : ");
-			ySize=sc.nextInt();		///세로길이
+			//System.out.println("세로 길이 입력 : ");
+			//ySize=sc.nextInt();		///세로길이
+			ySize=(int) (Math.random()*15+5);
 			
-			
-			cnt=5;
+			cnt=(int) (Math.random()*xSize*ySize/6+xSize);
 			Random r= new Random();
-			int ran=r.nextInt(5);
+			int ran=r.nextInt(10);
+			ran=(int)(Math.random()*10+1);
 			randomNumber=ran;
 			
 			
@@ -46,14 +49,12 @@ public class modifiedGenerator {
 			
 			init();
 			makeWall(randomNumber);
-			printSolution();
 			
 			
 			startX=2;
 			startY=2;
 			arr[startY][startX]=1;
 			
-			printSolution();
 //			if(solve(startX,startY,2)) {
 //				System.out.println("Yes");
 //			}else {
@@ -66,7 +67,9 @@ public class modifiedGenerator {
 					testCases--;
 					break;
 				}else {
+					System.out.println("No");
 					check=false;
+					break;
 				}
 			}
 			
@@ -90,7 +93,8 @@ public class modifiedGenerator {
 					
 //					fw.write("<deleted Array>\n");
 					fw.write(xSize+" "+ySize+"\n");
-					fw.write(arrStr);
+					fw.write(arrStr+"\n");
+					
 					
 				
 				} catch (Exception e) {
@@ -134,7 +138,6 @@ public class modifiedGenerator {
 		return tmp;
 	}
 	public static boolean solve(int x,int y,int count) {
-		System.out.println(randomNumber);
 		if(count==xSize*ySize+1-randomNumber) {
 			arr[y][x]=count-1;
 			endX=x;
@@ -188,7 +191,7 @@ public class modifiedGenerator {
 	
 	
 	
-	public static boolean isSafe(int x,int y) {
+	public static boolean isSafe(int x,int y) {		/// x,y값이 가로,세로길이보다 작고 그 배열이 마지않은곳이면 true 리턴 
 		if((x>=0 && x<xSize )&& (y>=0 && y<ySize) && arr[y][x]==0)
 			return true;
 		else
@@ -204,7 +207,7 @@ public class modifiedGenerator {
 		}
 	}
 	
-	public static int[][] deleteArr(){
+	public static int[][] deleteArr(){			//완성된 퍼즐배열에서 시작점과 종료점,벽이 아닌 부분을 랜덤으로 0으로 초기화
 		Random r=new Random();
 		int count=0;
 		int i,j;
@@ -223,7 +226,7 @@ public class modifiedGenerator {
 		return arr;
 	}
 	
-	public static void makeWall(int randomNumber){
+	public static void makeWall(int randomNumber){		///완성된 부분에서 반복문을 돌면서 랜덤수 만큼 벽을 생성 이미 벽이거나 시작점이면 다른지점을 생성
 		Random r=new Random();
 		int count=0;
 		int i,j;
@@ -231,7 +234,7 @@ public class modifiedGenerator {
 			i=r.nextInt(ySize-1);
 			j=r.nextInt(xSize-1);
 			
-			if(arr[i][j]==-1 || (i==endY&&j==endX) || (i==startY&&j==startX))
+			if(arr[i][j]==-1 || (i==startY&&j==startX))
 				continue;
 			else {
 				arr[i][j]=-1;
