@@ -28,19 +28,18 @@ public class modifiedGenerator {
 		
 		fw.write(testCases+"\n");
 		while(testCases>0) {
-			//System.out.println("가로 길이 입력 : ");
-			//xSize=sc.nextInt();		///가로길이
-
-			xSize=(int) (Math.random()*15+5);
 			
-			//System.out.println("세로 길이 입력 : ");
-			//ySize=sc.nextInt();		///세로길이
-			ySize=(int) (Math.random()*15+5);
+			xSize=randomRange(5, 15);
+			ySize=randomRange(5, 15);
 			
 			cnt=(int) (Math.random()*xSize*ySize/6+xSize);
-			Random r= new Random();
-			int ran=r.nextInt(10);
-			ran=(int)(Math.random()*10+1);
+			
+			
+//			int ran=r.nextInt(10);
+//			ran=(int)(Math.random()*10)+1;
+			
+			int ran=randomRange(1,10);
+			
 			randomNumber=ran;
 			
 			
@@ -55,11 +54,6 @@ public class modifiedGenerator {
 			startY=2;
 			arr[startY][startX]=1;
 			
-//			if(solve(startX,startY,2)) {
-//				System.out.println("Yes");
-//			}else {
-//				while(solve(startX,startY,2));
-//			}
 			boolean check=true;
 			while(true) {
 				if(solve(startX,startY,2) && arr[endY][endX]==xSize*ySize-randomNumber){
@@ -74,7 +68,6 @@ public class modifiedGenerator {
 			}
 			
 			if(check) {
-				printSolution();
 				
 				copy();
 				
@@ -253,5 +246,7 @@ public class modifiedGenerator {
 		}
 	}
 	
-	
+	public static int randomRange(int n1, int n2) {
+		   return (int) (Math.random() * (n2 - n1 + 1)) + n1;
+	}
 }
